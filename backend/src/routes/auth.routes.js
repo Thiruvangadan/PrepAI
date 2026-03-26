@@ -1,6 +1,7 @@
 import { Router } from "express";
 import {
   loginUserController,
+  logoutUserController,
   registerUserController,
 } from "../controllers/auth.controller.js";
 
@@ -21,5 +22,13 @@ authRoute.post("/register", registerUserController);
  */
 
 authRoute.post("/login", loginUserController);
+
+/**
+ * @route GET api/auth/logout
+ * @description Logout user
+ * @access Public
+ */
+
+authRoute.get("/logout", logoutUserController);
 
 export default authRoute;
