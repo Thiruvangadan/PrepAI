@@ -2,7 +2,7 @@ import dotenv from "dotenv";
 dotenv.config();
 import { z } from "zod";
 import { zodToJsonSchema } from "zod-to-json-schema";
-import { Behavior, GoogleGenAI } from "@google/genai";
+import { GoogleGenAI } from "@google/genai";
 
 const ai = new GoogleGenAI({
   apiKey: process.env.GOOGLE_GENAI_API_KEY,
@@ -103,17 +103,74 @@ const generateInterviewReport = async ({
   selfDescription,
   jobDescription,
 }) => {
-  const prompt = ``;
+  const prompt = `You are an expert interviewer.
+Return STRICT JSON only.
+
+IMPORTANT:
+- technicalQuestions MUST be an array of objects with:
+  { "question": string, "intention": string, "answer": string }
+
+- behavioralQuestions MUST be an array of objects with same structure
+
+- skillGaps MUST be array of:
+  { "skill": string, "severity": "low" | "medium" | "high" }
+
+- preparationPlan MUST be array of:
+  { "day": number, "focus": string, "tasks": string[] }
+
+RULES:
+- matchScore MUST be a number between 0 and 100
+- Do not return empty fields
+- Each "answer" must be detailed (3-5 sentences)
+- Do not include markdown or explanations
+- Return ONLY valid JSON
+- Each array item MUST be a valid JSON object.
+- Do NOT wrap objects in strings.
+
+Generate:
+- title of the job
+- matchScore (0-100)
+- 5 technicalQuestions WITH answers
+- 3 behavioralQuestions WITH answers
+- 3 skillGaps
+- 5 day preparationPlan
+
+CRITICAL:
+- technicalQuestions MUST be an array of EXACTLY 5 objects
+- behavioralQuestions MUST be an array of EXACTLY 3 objects
+- skillGaps MUST be an array of EXACTLY 3 objects
+- preparationPlan MUST be an array of EXACTLY 5 objects
+
+- DO NOT return numbers in place of objects
+- DO NOT rename fields (use exact keys: title, matchScore, technicalQuestions, behavioralQuestions, skillGaps, preparationPlan)
+
+- If unsure, still return valid objects (never numbers or null)
+
+Do not approximate.
+Do not summarize.
+Do not replace objects with numbers.
+
+DATA:
+
+Resume:
+${resume}
+
+Self Description:
+${selfDescription}
+
+Job Description:
+${jobDescription}
+`;
   const res = await ai.models.generateContent({
-    model: "gemini-2.5-flash",
-    contents: "",
+    model: "gemini-3-flash-preview",
+    contents: prompt,
     config: {
       responseMimeType: "application/json",
-      responseSchema: zodToJsonSchema(interviewReportSchema),
+      //responseSchema: zodToJsonSchema(interviewReportSchema),
     },
   });
 
-  console.log(res.text);
+  return interviewReportSchema.parse(JSON.parse(res.text));
 };
 
-export default invokeai;
+export default generateInterviewReport;
