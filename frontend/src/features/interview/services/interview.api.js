@@ -1,0 +1,45 @@
+import axios from "axios";
+import Interview from "../pages/Interview";
+
+const api = axios.create({
+  baseURL: "http://localhost:5002",
+  withCredentials: true,
+});
+
+/**
+ * @description Service to generate interview report based on user self description, resume and job description.
+ */
+export const generateInterviewReport = async ({
+  jobDescription,
+  selfDescription,
+  resumeFile,
+}) => {
+  const formData = new FormData();
+  formData.append("jobDescription", jobDescription);
+  formData.append("selfDescription", selfDescription);
+  formData.append("resume", resumeFile);
+
+  const res = await api.post("/api/interview/", formData, {
+    "Content-Type": "multipart/form-data",
+  });
+
+  return res.data;
+};
+
+/**
+ * @description Service to get interview report by interviewId.
+ */
+export const getInterviewReportById = async (interviewId) => {
+  const res = await api.get(`/api/interview/report/${interviewId}`);
+
+  return res.data;
+};
+
+/**
+ * @description Service to get all interview reports of the user.
+ */
+export const getAllInterviewReports = async () => {
+  const res = await api.get("/api/interview/");
+
+  return res.data;
+};
