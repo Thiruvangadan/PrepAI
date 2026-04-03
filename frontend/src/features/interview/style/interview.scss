@@ -14,7 +14,11 @@ $severity-high: #ff4d4d;
 $severity-medium: #f5a623;
 $severity-low: #3fb950;
 
-
+$score-high: #22c55e;      
+$score-good: #3b82f6;      
+$score-moderate: #eab308;  
+$score-weak: #f97316;      
+$score-poor: #ef4444;  
 
 *::-webkit-scrollbar {
     display: none;
@@ -418,6 +422,7 @@ $severity-low: #3fb950;
         align-items: center;
         justify-content: center;
         border: 4px solid;
+        
 
         &.score--high {
             border-color: $score-high;
@@ -446,8 +451,22 @@ $severity-low: #3fb950;
     &__sub {
         margin: 0;
         font-size: 0.75rem;
-        color: $severity-low;
         text-align: center;
+        &.score--high {
+            color: $score-high;
+        }
+        &.score--good {
+            color: $score-good;
+        }
+        &.score--moderate{
+            color: $score-moderate;
+        }
+        &.score--weak {
+            color: $score-weak;
+        }
+        &.score--poor {
+            color: $score-poor;
+        }
     }
 }
 

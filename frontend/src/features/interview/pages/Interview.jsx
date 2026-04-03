@@ -291,7 +291,7 @@ const Interview = () => {
             <div className={`match-score__ring ${scoreColor}`}>
               <span className="match-score__value">{report.matchScore}</span>
             </div>
-            <p className="match-score__sub">
+            <p className={`match-score__sub ${scoreColor}`}>
               {getMatchText(report.matchScore)}
             </p>
           </div>
