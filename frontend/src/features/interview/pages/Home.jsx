@@ -13,6 +13,16 @@ const Home = () => {
 
   const handleGenerateReport = async () => {
     const resumeFile = resumeInputRef.current.files[0];
+
+    if (!jobDescription.trim()) {
+      alert("Jobdescription is needed");
+      return;
+    }
+    if (!resumeFile) {
+      alert("Resume is needed");
+      return;
+    }
+
     const data = await generateReport({
       jobDescription,
       selfDescription,

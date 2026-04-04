@@ -169,18 +169,37 @@ const Interview = () => {
     <div className="interview-page">
       <div className="interview-layout">
         <nav className="interview-nav">
-          <div className="nav-content">
-            <p className="interview-nav__label">Sections</p>
-            {NAV_ITEMS.map((item) => (
-              <button
-                key={item.id}
-                className={`interview-nav__item ${activeNav === item.id ? "interview-nav__item--active" : ""}`}
-                onClick={() => setActiveNav(item.id)}
+          <div>
+            <button className="back-button" onClick={() => navigate(-1)}>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               >
-                <span className="interview-nav__icon">{item.icon}</span>
-                {item.label}
-              </button>
-            ))}
+                <path d="M19 12H5" />
+                <path d="M12 19l-7-7 7-7" />
+              </svg>
+              Back
+            </button>
+            <div className="nav-content">
+              <p className="interview-nav__label">Sections</p>
+              {NAV_ITEMS.map((item) => (
+                <button
+                  key={item.id}
+                  className={`interview-nav__item ${activeNav === item.id ? "interview-nav__item--active" : ""}`}
+                  onClick={() => setActiveNav(item.id)}
+                >
+                  <span className="interview-nav__icon">{item.icon}</span>
+                  {item.label}
+                </button>
+              ))}
+            </div>
           </div>
           <button
             onClick={() => {
@@ -206,24 +225,6 @@ const Interview = () => {
         <main className="interview-content">
           <div className="header-row">
             <div className="content-header-wrapper">
-              <button className="back-button" onClick={() => navigate(-1)}>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="18"
-                  height="18"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M19 12H5" />
-                  <path d="M12 19l-7-7 7-7" />
-                </svg>
-                Back
-              </button>
-
               {activeNav === "technical" && (
                 <div className="content-header">
                   <h2>Technical Questions</h2>

@@ -55,6 +55,30 @@ $score-poor: #ef4444;
 
 
 .interview-nav {
+
+    .back-button {
+        display: inline-flex;
+        align-items: center;
+        gap: 3px;
+
+        background: transparent;
+        border: none;
+        color: #bfc6d2;
+        font-size: 1rem;
+        cursor: pointer;
+
+        margin-bottom: 0.2rem;
+
+        transition: all 0.2s ease;
+
+        &:hover {
+            color: #ffffff;
+            transform: translateX(-2px);
+        }
+       
+
+    }
+    
     width: 220px;
     flex-shrink: 0;
     padding: 1.75rem 1rem;
@@ -137,28 +161,7 @@ $score-poor: #ef4444;
         align-items: flex-start;
     }
 
-    .back-button {
-        display: inline-flex;
-        align-items: center;
-        gap: 3px;
-
-        background: transparent;
-        border: none;
-        color: #bfc6d2;
-        font-size: 1rem;
-        cursor: pointer;
-
-        margin-bottom: 0.2rem;
-
-        transition: all 0.2s ease;
-
-        &:hover {
-            color: #ffffff;
-            transform: translateX(-2px);
-        }
-       
-
-    }
+    
     section {
         min-height: 100%;
     }
