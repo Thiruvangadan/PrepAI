@@ -2,6 +2,7 @@ import "../style/home.scss";
 import { useInterview } from "../hooks/useInterview";
 import { useRef, useState } from "react";
 import { useNavigate } from "react-router";
+import Loader from "../../auth/components/Loader";
 
 const Home = () => {
   const { loading, generateReport, reports } = useInterview();
@@ -18,7 +19,7 @@ const Home = () => {
       alert("Jobdescription is needed");
       return;
     }
-    if (!resumeFile) {
+    if (!selfDescription && !resumeFile) {
       alert("Resume is needed");
       return;
     }
@@ -31,11 +32,7 @@ const Home = () => {
     navigate(`/interview/${data._id}`);
   };
   if (loading) {
-    return (
-      <main>
-        <h1>Loading your interview plan....</h1>
-      </main>
-    );
+    return <Loader />;
   }
 
   return (

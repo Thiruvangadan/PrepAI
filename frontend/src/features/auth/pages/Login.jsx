@@ -2,6 +2,7 @@ import "../auth.form.scss";
 import { useNavigate, Link } from "react-router";
 import { useAuth } from "../hooks/useAuth";
 import { useState } from "react";
+import Loader from "../components/Loader";
 
 const Login = () => {
   const { loading, handleLogin } = useAuth();
@@ -19,11 +20,7 @@ const Login = () => {
   };
 
   if (loading) {
-    return (
-      <main>
-        <h1>Loading....</h1>
-      </main>
-    );
+    return <Loader />;
   }
   return (
     <main>
