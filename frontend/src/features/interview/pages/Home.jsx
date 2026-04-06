@@ -1,16 +1,25 @@
 import "../style/home.scss";
+import { useAuth } from "../../auth/hooks/useAuth";
 import { useInterview } from "../hooks/useInterview";
 import { useRef, useState } from "react";
 import { useNavigate } from "react-router";
 import Loader from "../../auth/components/Loader";
 
 const Home = () => {
+  const { handleLogout } = useAuth();
+
   const { loading, generateReport, reports } = useInterview();
 
   const [jobDescription, setJobDescription] = useState("");
   const [selfDescription, setSelfDescription] = useState("");
   const resumeInputRef = useRef();
   const navigate = useNavigate();
+
+  const handleLogoutUser = async () => {
+    await handleLogout();
+    navigate("/login");
+    return;
+  };
 
   const handleGenerateReport = async () => {
     const resumeFile = resumeInputRef.current.files[0];
@@ -46,7 +55,9 @@ const Home = () => {
           build a winning strategy.
         </p>
       </header>
-
+      <div className="btn-logout">
+        <button onClick={handleLogoutUser}>Logout</button>
+      </div>
       <div className="interview-card">
         <div className="interview-card__body">
           <div className="panel panel--left">

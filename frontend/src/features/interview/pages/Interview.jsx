@@ -2,6 +2,7 @@ import "../style/interview.scss";
 import { useState, useEffect } from "react";
 import { useInterview } from "../hooks/useInterview";
 import { useParams, useNavigate } from "react-router";
+import Loader from "../../auth/components/Loader";
 
 const NAV_ITEMS = [
   {
@@ -147,11 +148,7 @@ const Interview = () => {
   }, [interviewId]);
 
   if (loading || !report) {
-    return (
-      <main className="loading-screen">
-        <h1>Loading your interview plan...</h1>
-      </main>
-    );
+    return <Loader />;
   }
 
   const scoreColor =
