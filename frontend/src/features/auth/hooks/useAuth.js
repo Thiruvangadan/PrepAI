@@ -1,9 +1,11 @@
 import { useContext, useEffect } from "react";
 import { AuthContext } from "../auth.context";
 import { getMe, login, logout, register } from "../services/auth.api";
+import { InterviewContext } from "../../interview/interview.context";
 
 export const useAuth = () => {
   const context = useContext(AuthContext);
+  const { resetState } = useContext(InterviewContext);
   const { user, setUser, loading, setLoading } = context;
 
   const handleLogin = async ({ email, password }) => {
@@ -34,6 +36,7 @@ export const useAuth = () => {
     setLoading(true);
     try {
       const data = await logout();
+      resetState();
       setUser(null);
     } catch (error) {
     } finally {
