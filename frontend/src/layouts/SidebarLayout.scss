@@ -1,0 +1,11 @@
+.sidebar-layout {
+  display: flex;
+  min-height: 100vh;
+  background-color: #0d1117;
+}
+
+.main-content {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
