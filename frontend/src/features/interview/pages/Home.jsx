@@ -1,25 +1,16 @@
 import "../style/home.scss";
-import { useAuth } from "../../auth/hooks/useAuth";
 import { useInterview } from "../hooks/useInterview";
 import { useRef, useState } from "react";
 import { useNavigate } from "react-router";
 import Loader from "../../auth/components/Loader";
 
 const Home = () => {
-  const { handleLogout } = useAuth();
-
-  const { loading, generateReport, reports } = useInterview();
+  const { loading, generateReport } = useInterview();
 
   const [jobDescription, setJobDescription] = useState("");
   const [selfDescription, setSelfDescription] = useState("");
   const resumeInputRef = useRef();
   const navigate = useNavigate();
-
-  const handleLogoutUser = async () => {
-    await handleLogout();
-    navigate("/login");
-    return;
-  };
 
   const handleGenerateReport = async () => {
     const resumeFile = resumeInputRef.current.files[0];
@@ -55,9 +46,6 @@ const Home = () => {
           build a winning strategy.
         </p>
       </header>
-      <div className="btn-logout">
-        <button onClick={handleLogoutUser}>Logout</button>
-      </div>
       <div className="interview-card">
         <div className="interview-card__body">
           <div className="panel panel--left">
@@ -230,37 +218,6 @@ const Home = () => {
           </button>
         </div>
       </div>
-
-      {reports.length > 0 && (
-        <section className="recent-reports">
-          <h2>My Recent Interview Plans</h2>
-          <ul className="reports-list">
-            {reports.map((report) => (
-              <li
-                key={report._id}
-                className="report-item"
-                onClick={() => navigate(`/interview/${report._id}`)}
-              >
-                <h3>{report.title || "Untitled Position"}</h3>
-                <p className="report-meta">
-                  Generated on {new Date(report.createdAt).toLocaleDateString()}
-                </p>
-                <p
-                  className={`match-score ${report.matchScore >= 80 ? "score--high" : report.matchScore >= 60 ? "score--mid" : "score--low"}`}
-                >
-                  Match Score: {report.matchScore}%
-                </p>
-              </li>
-            ))}
-          </ul>
-        </section>
-      )}
-
-      <footer className="page-footer">
-        <a href="#">Privacy Policy</a>
-        <a href="#">Terms of Service</a>
-        <a href="#">Help Center</a>
-      </footer>
     </div>
   );
 };

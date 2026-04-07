@@ -15,8 +15,14 @@ export const useInterview = () => {
     throw new Error("useInterview must be used within an InterviewProvider");
   }
 
-  const { loading, setLoading, report, setReport, reports, setReports } =
-    context;
+  const {
+    loading,
+    setLoading,
+    currentReport,
+    setCurrentReport,
+    reports,
+    setReports,
+  } = context;
 
   const generateReport = async ({
     jobDescription,
@@ -31,7 +37,7 @@ export const useInterview = () => {
         selfDescription,
         resumeFile,
       });
-      setReport(res.interviewReport);
+      setCurrentReport(res.interviewReport);
     } catch (error) {
       console.error(error);
     } finally {
@@ -45,7 +51,7 @@ export const useInterview = () => {
     let res = null;
     try {
       res = await getInterviewReportById(interviewId);
-      setReport(res.interviewReport);
+      setCurrentReport(res.interviewReport);
     } catch (error) {
       console.error(error);
     } finally {
@@ -70,16 +76,17 @@ export const useInterview = () => {
   };
 
   useEffect(() => {
+    if (reports.length === 0) {
+      getReports();
+    }
     if (interviewId) {
       getReportById(interviewId);
-    } else {
-      getReports();
     }
   }, [interviewId]);
 
   return {
     loading,
-    report,
+    currentReport,
     reports,
     generateReport,
     getReportById,

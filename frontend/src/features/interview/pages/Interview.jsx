@@ -138,7 +138,8 @@ const RoadMapDay = ({ day }) => (
 const Interview = () => {
   const [activeNav, setActiveNav] = useState("technical");
   const navigate = useNavigate();
-  const { report, getReportById, loading, getResumePdf } = useInterview();
+  const { currentReport, getReportById, loading, getResumePdf } =
+    useInterview();
   const { interviewId } = useParams();
 
   useEffect(() => {
@@ -147,18 +148,18 @@ const Interview = () => {
     }
   }, [interviewId]);
 
-  if (loading || !report) {
+  if (loading || !currentReport) {
     return <Loader />;
   }
 
   const scoreColor =
-    report.matchScore >= 80
+    currentReport.matchScore >= 80
       ? "score--high"
-      : report.matchScore >= 60
+      : currentReport.matchScore >= 60
         ? "score--good"
-        : report.matchScore >= 40
+        : currentReport.matchScore >= 40
           ? "score--moderate"
-          : report.matchScore >= 20
+          : currentReport.matchScore >= 20
             ? "score--weak"
             : "score--poor";
 
@@ -226,7 +227,7 @@ const Interview = () => {
                 <div className="content-header">
                   <h2>Technical Questions</h2>
                   <span className="content-header__count">
-                    {report.technicalQuestions.length} questions
+                    {currentReport.technicalQuestions.length} questions
                   </span>
                 </div>
               )}
@@ -235,7 +236,7 @@ const Interview = () => {
                 <div className="content-header">
                   <h2>Behavioral Questions</h2>
                   <span className="content-header__count">
-                    {report.behavioralQuestions.length} questions
+                    {currentReport.behavioralQuestions.length} questions
                   </span>
                 </div>
               )}
@@ -243,7 +244,7 @@ const Interview = () => {
                 <div className="content-header">
                   <h2>Preparation Road Map</h2>
                   <span className="content-header__count">
-                    {report.preparationPlan.length}-day plan
+                    {currentReport.preparationPlan.length}-day plan
                   </span>
                 </div>
               )}
@@ -252,7 +253,7 @@ const Interview = () => {
             {activeNav === "technical" && (
               <section>
                 <div className="q-list">
-                  {report.technicalQuestions.map((q, i) => (
+                  {currentReport.technicalQuestions.map((q, i) => (
                     <QuestionCard key={i} item={q} index={i} />
                   ))}
                 </div>
@@ -262,7 +263,7 @@ const Interview = () => {
             {activeNav === "behavioral" && (
               <section>
                 <div className="q-list">
-                  {report.behavioralQuestions.map((q, i) => (
+                  {currentReport.behavioralQuestions.map((q, i) => (
                     <QuestionCard key={i} item={q} index={i} />
                   ))}
                 </div>
@@ -272,7 +273,7 @@ const Interview = () => {
             {activeNav === "roadmap" && (
               <section>
                 <div className="roadmap-list">
-                  {report.preparationPlan.map((day) => (
+                  {currentReport.preparationPlan.map((day) => (
                     <RoadMapDay key={day.day} day={day} />
                   ))}
                 </div>
@@ -287,10 +288,12 @@ const Interview = () => {
           <div className="match-score">
             <p className="match-score__label">Match Score</p>
             <div className={`match-score__ring ${scoreColor}`}>
-              <span className="match-score__value">{report.matchScore}</span>
+              <span className="match-score__value">
+                {currentReport.matchScore}
+              </span>
             </div>
             <p className={`match-score__sub ${scoreColor}`}>
-              {getMatchText(report.matchScore)}
+              {getMatchText(currentReport.matchScore)}
             </p>
           </div>
 
@@ -299,7 +302,7 @@ const Interview = () => {
           <div className="skill-gaps">
             <p className="skill-gaps__label">Skill Gaps</p>
             <div className="skill-gaps__list">
-              {report.skillGaps.map((gap, i) => (
+              {currentReport.skillGaps.map((gap, i) => (
                 <span
                   key={i}
                   className={`skill-tag skill-tag--${gap.severity}`}
