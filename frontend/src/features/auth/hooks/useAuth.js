@@ -2,6 +2,7 @@ import { useContext, useEffect } from "react";
 import { AuthContext } from "../auth.context";
 import { getMe, login, logout, register } from "../services/auth.api";
 import { InterviewContext } from "../../interview/interview.context";
+import { data } from "react-router";
 
 export const useAuth = () => {
   const context = useContext(AuthContext);
@@ -24,9 +25,10 @@ export const useAuth = () => {
   const handleRegister = async ({ username, email, password }) => {
     setLoading(true);
     try {
-      const data = await register({ username, email, password });
-      setUser(data.user);
+      await register({ username, email, password });
+      return { success: true, data };
     } catch (error) {
+      return { success: false };
     } finally {
       setLoading(false);
     }
@@ -50,6 +52,11 @@ export const useAuth = () => {
         const data = await getMe();
         setUser(data.user);
       } catch (error) {
+        if (error.response?.status === 401) {
+          setUser(null);
+        } else {
+          console.error(error);
+        }
       } finally {
         setLoading(false);
       }

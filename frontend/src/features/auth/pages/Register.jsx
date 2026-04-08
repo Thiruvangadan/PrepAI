@@ -9,11 +9,25 @@ const Register = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isInvalid, setIsInvalid] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await handleRegister({ username, email, password });
-    navigate("/");
+    const invalid = !username.trim() || !email.trim() || !password.trim();
+
+    setIsInvalid(invalid);
+
+    if (invalid) {
+      return;
+    }
+
+    const res = await handleRegister({ username, email, password });
+    if (!res.success) {
+      setIsInvalid(true);
+      return;
+    }
+
+    navigate("/login");
   };
 
   if (loading) {
@@ -23,6 +37,7 @@ const Register = () => {
   return (
     <main>
       <div className="form-container">
+        {isInvalid && <div className="invalid">All fields are required!!</div>}
         <h1>Register</h1>
         <form onSubmit={handleSubmit}>
           <div className="input-group">
@@ -30,10 +45,13 @@ const Register = () => {
             <input
               onChange={(e) => {
                 setUsername(e.target.value);
+                setIsInvalid(false);
               }}
               type="text"
               id="username"
               name="username"
+              //required
+
               placeholder="Enter username"
             />
           </div>
@@ -42,10 +60,12 @@ const Register = () => {
             <input
               onChange={(e) => {
                 setEmail(e.target.value);
+                setIsInvalid(false);
               }}
               type="email"
               id="email"
               name="email"
+              //required
               placeholder="Enter email address"
             />
           </div>
@@ -54,9 +74,11 @@ const Register = () => {
             <input
               onChange={(e) => {
                 setPassword(e.target.value);
+                setIsInvalid(false);
               }}
               type="password"
               id="password"
+              //required
               name="password"
               placeholder="Enter password"
             />
