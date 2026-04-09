@@ -16,7 +16,7 @@ export const useAuth = () => {
       setUser(data.user);
       return { success: true };
     } catch (error) {
-      return { success: false, message: error };
+      return { success: false };
     } finally {
       setLoading(false);
     }

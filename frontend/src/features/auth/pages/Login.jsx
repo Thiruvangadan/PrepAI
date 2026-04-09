@@ -9,14 +9,24 @@ const Login = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const res = await handleLogin({ email, password });
-    if (res.success) {
-      navigate("/");
+    if (!email.trim() || !password.trim()) {
+      setError("All fields are required");
+      return;
     }
-    return;
+
+    const res = await handleLogin({ email, password });
+    if (!res.success) {
+      setError("Invalid Creditentials");
+      setEmail("");
+      setPassword("");
+      return;
+    }
+
+    navigate("/");
   };
 
   if (loading) {
@@ -24,14 +34,17 @@ const Login = () => {
   }
   return (
     <main>
-      <div className="form-container">
+      <div className="form-container login">
+        <div className={`invalid ${error ? "toast" : ""}`}>{error || ""}</div>
         <h1>Login</h1>
         <form onSubmit={handleSubmit}>
           <div className="input-group">
             <label htmlFor="email">Email</label>
             <input
+              value={email}
               onChange={(e) => {
                 setEmail(e.target.value);
+                setError("");
               }}
               type="email"
               id="email"
@@ -42,6 +55,7 @@ const Login = () => {
           <div className="input-group">
             <label htmlFor="password">Password</label>
             <input
+              value={password}
               onChange={(e) => {
                 setPassword(e.target.value);
               }}

@@ -11,13 +11,32 @@ main{
     display: flex;
     flex-direction: column;
     gap : 1rem;  
+
+    form{
+      display: flex;
+      flex-direction: column;    
+    }
+  }
+
+  .login {
+      form {
+      gap: 0.75rem;
+    }
   }
 
   .invalid{
     color: #e1034d;
     min-height: 2rem;
     font-size: 0.9rem;
-  }
+    opacity: 0;
+    transform: translateY(-4px);
+    transition: all 0.25s ease;
+}
+
+.invalid:not(:empty) {
+  opacity: 1;
+  transform: translateY(0);
+}
 
   .toast{
     display: flex;
@@ -29,10 +48,7 @@ main{
     border-radius: 0.5rem;
   }
   
-  form{
-    display: flex;
-    flex-direction: column;
-  }
+ 
   .input-group{
     display: flex;
     flex-direction: column;
