@@ -22,9 +22,14 @@ export const registerUserController = async (req, res) => {
     $or: [{ username }, { email }],
   });
 
-  if (isUserAlreadyExists) {
+  if (isUserAlreadyExists?.username === username) {
     return res.status(400).json({
-      message: "Account already exists with this username or email address",
+      message: "Username already taken",
+    });
+  }
+  if (isUserAlreadyExists?.email === email) {
+    return res.status(400).json({
+      message: "Email already registered",
     });
   }
 
@@ -36,13 +41,13 @@ export const registerUserController = async (req, res) => {
     password: hash,
   });
 
-  const token = jwt.sign(
-    { id: user._id, username: user.username },
-    process.env.JWT_SECRET,
-    { expiresIn: "1d" },
-  );
+  // const token = jwt.sign(
+  //   { id: user._id, username: user.username },
+  //   process.env.JWT_SECRET,
+  //   { expiresIn: "1d" },
+  // );
 
-  res.cookie("token", token);
+  // res.cookie("token", token);
 
   res.status(201).json({
     message: "User registered successfully",
@@ -85,7 +90,11 @@ export const loginUserController = async (req, res) => {
     { expiresIn: "1d" },
   );
 
-  res.cookie("token", token);
+  res.cookie("token", token, {
+    httpOnly: true,
+    //secure: true,
+    sameSite: "strict",
+  });
 
   res.status(200).json({
     message: "User logged in successfully",
