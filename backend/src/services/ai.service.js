@@ -1,8 +1,9 @@
 import dotenv from "dotenv";
 dotenv.config();
+import { GoogleGenAI } from "@google/genai";
 import { z } from "zod";
 import { zodToJsonSchema } from "zod-to-json-schema";
-import { GoogleGenAI } from "@google/genai";
+import puppeteer from "puppeteer";
 
 const ai = new GoogleGenAI({
   apiKey: process.env.GOOGLE_GENAI_API_KEY,
@@ -98,7 +99,7 @@ const interviewReportSchema = z.object({
     ),
 });
 
-const generateInterviewReport = async ({
+export const generateInterviewReport = async ({
   resume,
   selfDescription,
   jobDescription,
@@ -132,14 +133,14 @@ Generate:
 - matchScore (0-100)
 - 5 technicalQuestions WITH answers
 - 3 behavioralQuestions WITH answers
-- 3 skillGaps
-- 5 day preparationPlan
+- 7 skillGaps
+- 7 day preparationPlan
 
 CRITICAL:
 - technicalQuestions MUST be an array of EXACTLY 5 objects
 - behavioralQuestions MUST be an array of EXACTLY 3 objects
-- skillGaps MUST be an array of EXACTLY 3 objects
-- preparationPlan MUST be an array of EXACTLY 5 objects
+- skillGaps MUST be an array of EXACTLY 7 objects
+- preparationPlan MUST be an array of EXACTLY 7 objects
 
 - DO NOT return numbers in place of objects
 - DO NOT rename fields (use exact keys: title, matchScore, technicalQuestions, behavioralQuestions, skillGaps, preparationPlan)
@@ -162,7 +163,7 @@ Job Description:
 ${jobDescription}
 `;
   const res = await ai.models.generateContent({
-    model: "gemini-2.5-flash",
+    model: "gemini-3-flash-preview",
     contents: prompt,
     config: {
       responseMimeType: "application/json",
@@ -173,4 +174,54 @@ ${jobDescription}
   return interviewReportSchema.parse(JSON.parse(res.text));
 };
 
-export default generateInterviewReport;
+const generatePdfFromHtml = async (htmlContent) => {
+  const browser = await puppeteer.launch();
+  const page = await browser.newPage();
+  await page.setContent(htmlContent, { waitUntil: "networkidle0" });
+
+  const pdfBuffer = await page.pdf({
+    format: "A4",
+    printBackground: true,
+    margin: {
+      top: "20px",
+      bottom: "20px",
+      left: "20px",
+      right: "20px",
+    },
+  });
+  await browser.close();
+  return pdfBuffer;
+};
+
+export const generateResumePdf = async ({
+  resume,
+  selfDescription,
+  jobDescription,
+}) => {
+  const resumePdfSchema = z.object({
+    html: z
+      .string()
+      .describe(
+        "The HTML content of the resume which can be converted to PDF using any library like puppeteer",
+      ),
+  });
+
+  const prompt = `Generate resume for a candidate with the following details :
+  Resume : ${resume}
+  Self Description :${selfDescription}
+  Job Description : ${jobDescription}
+  the response should be a JSON object with a single field "html" which contains the HTML content of the resume which can be converted to PDF using any library like puppeteer`;
+
+  const res = await ai.models.generateContent({
+    model: "gemini-3-flash-preview",
+    contents: prompt,
+    config: {
+      responseMimeType: "application/json",
+      responseSchema: zodToJsonSchema(resumePdfSchema),
+    },
+  });
+
+  const jsonContent = JSON.parse(res.text);
+  const pdfBuffer = await generatePdfFromHtml(jsonContent.html);
+  return pdfBuffer;
+};
