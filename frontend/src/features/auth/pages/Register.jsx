@@ -56,6 +56,9 @@ const Register = () => {
     const res = await handleRegister({ username, email, password });
 
     if (res) {
+      setUsername("");
+      setEmail("");
+      setPassword("");
       setErrors((prev) => ({
         ...prev,
         general: res,

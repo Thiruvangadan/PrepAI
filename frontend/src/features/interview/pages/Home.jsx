@@ -10,7 +10,25 @@ const Home = () => {
   const [jobDescription, setJobDescription] = useState("");
   const [selfDescription, setSelfDescription] = useState("");
   const resumeInputRef = useRef();
+  const [selectedFile, setSelectedFile] = useState(null);
   const navigate = useNavigate();
+
+  const handleFileChange = () => {
+    const file = resumeInputRef.current.files[0];
+    if (!file) return;
+
+    if (file.type !== "application/pdf") {
+      alert("Only PDF allowed");
+      return;
+    }
+
+    if (file.size > 5 * 1024 * 1024) {
+      alert("File size must be less than 5MB");
+      return;
+    }
+
+    setSelectedFile(file);
+  };
 
   const handleGenerateReport = async () => {
     const resumeFile = resumeInputRef.current.files[0];
@@ -130,9 +148,13 @@ const Home = () => {
                   </svg>
                 </span>
                 <p className="dropzone__title">
-                  Click to upload or drag &amp; drop
+                  {selectedFile
+                    ? `Uploaded: ${selectedFile.name}`
+                    : "Click to upload or drag & drop"}
                 </p>
-                <p className="dropzone__subtitle">PDF (Max 5MB)</p>
+                <p className="dropzone__subtitle">
+                  PDF {selectedFile ? "✅ File ready" : "PDF (Max 5MB)"}
+                </p>
                 <input
                   ref={resumeInputRef}
                   hidden
@@ -140,6 +162,7 @@ const Home = () => {
                   id="resume"
                   name="resume"
                   accept=".pdf"
+                  onChange={handleFileChange}
                 />
               </label>
             </div>
@@ -153,6 +176,7 @@ const Home = () => {
                 Quick Self-Description
               </label>
               <textarea
+                value={selfDescription}
                 onChange={(e) => {
                   setSelfDescription(e.target.value);
                 }}

@@ -41,7 +41,6 @@ const Login = () => {
           <div className="input-group">
             <label htmlFor="email">Email</label>
             <input
-              value={email}
               onChange={(e) => {
                 setEmail(e.target.value);
                 setError("");
@@ -55,7 +54,6 @@ const Login = () => {
           <div className="input-group">
             <label htmlFor="password">Password</label>
             <input
-              value={password}
               onChange={(e) => {
                 setPassword(e.target.value);
               }}
