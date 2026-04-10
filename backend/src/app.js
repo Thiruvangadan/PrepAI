@@ -8,20 +8,13 @@ const app = express();
 
 app.use(
   cors({
-    origin: true,
+    origin: process.env.ALLOWED_ORIGINS,
     credentials: true,
   }),
 );
 
-app.options("/.*/", cors());
-
-app.options("/.*/", (req, res) => {
-  res.sendStatus(200);
-});
-
 app.use(express.json());
 app.use(cookieParser());
-
 
 app.use("/api/auth", authRoute);
 app.use("/api/interview", interviewRouter);
