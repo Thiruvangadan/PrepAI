@@ -1,5 +1,5 @@
 import "./SidebarLayout.scss";
-import Sidebar from "../features/interview/components/SideBar";
+import Sidebar from "../features/interview/components/Sidebar";
 import { useInterview } from "../features/interview/hooks/useInterview";
 import { useAuth } from "../features/auth/hooks/useAuth";
 import { useNavigate } from "react-router";
