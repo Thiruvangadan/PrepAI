@@ -123,7 +123,13 @@ GEMINI_API_KEY=your_api_key
 ALLOWED_ORIGINS = http://localhost:5173
 
 ```
+
+Create a `.env` file in the frontend:
+
+```env id="4pq4om"
 VITE_API_URL=http://localhost:5002
+
+```
 
 Run the project:
 
