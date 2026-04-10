@@ -3,7 +3,6 @@ import Sidebar from "../features/interview/components/SideBar";
 import { useInterview } from "../features/interview/hooks/useInterview";
 import { useAuth } from "../features/auth/hooks/useAuth";
 import { useNavigate } from "react-router";
-import { useEffect } from "react";
 
 const SidebarLayout = ({ children }) => {
   const { reports } = useInterview();

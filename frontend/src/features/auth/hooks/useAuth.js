@@ -2,7 +2,6 @@ import { useContext, useEffect } from "react";
 import { AuthContext } from "../auth.context";
 import { getMe, login, logout, register } from "../services/auth.api";
 import { InterviewContext } from "../../interview/interview.context";
-import { data } from "react-router";
 
 export const useAuth = () => {
   const context = useContext(AuthContext);

@@ -1,10 +1,4 @@
-import axios from "axios";
-import Interview from "../pages/Interview";
-
-const api = axios.create({
-  baseURL: "http://localhost:5002",
-  withCredentials: true,
-});
+import api from "../../../lib/axios";
 
 /**
  * @description Service to generate interview report based on user self description, resume and job description.
