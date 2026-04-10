@@ -6,15 +6,16 @@ import cors from "cors";
 
 const app = express();
 
-app.use(express.json());
-app.use(cookieParser());
-
 app.use(
   cors({
     origin: process.env.ALLOWED_ORIGINS,
     credentials: true,
   }),
 );
+app.options("*", cors());
+app.use(express.json());
+app.use(cookieParser());
+
 
 app.use("/api/auth", authRoute);
 app.use("/api/interview", interviewRouter);
