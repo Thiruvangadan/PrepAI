@@ -8,11 +8,11 @@ const app = express();
 
 app.use(
   cors({
-    origin: process.env.ALLOWED_ORIGINS,
+    origin: true,
     credentials: true,
   }),
 );
-app.options("*", cors());
+
 app.use(express.json());
 app.use(cookieParser());
 
