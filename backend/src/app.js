@@ -13,9 +13,9 @@ app.use(
   }),
 );
 
-app.options("*", cors());
+app.options("/*", cors());
 
-app.options("*", (req, res) => {
+app.options("/*", (req, res) => {
   res.sendStatus(200);
 });
 
