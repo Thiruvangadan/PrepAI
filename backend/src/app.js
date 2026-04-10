@@ -9,13 +9,9 @@ const app = express();
 app.use(express.json());
 app.use(cookieParser());
 
-const allowedOrigins = process.env.ALLOWED_ORIGINS
-  ? process.env.ALLOWED_ORIGINS.split(",")
-  : [];
-
 app.use(
   cors({
-    origin: allowedOrigins,
+    origin: process.env.ALLOWED_ORIGINS,
     credentials: true,
   }),
 );
