@@ -102,7 +102,7 @@ The goal is simple: **bridge the gap between preparation and real interview expe
 
 ```bash id="326r2q"
 # Clone the repo
-git clone <repo-url>
+git clone https://github.com/Thiruvangadan/PrepAI.git
 
 # Install backend dependencies
 cd backend
@@ -116,11 +116,14 @@ npm install
 Create a `.env` file in the backend:
 
 ```env id="4pq4om"
-PORT=5000
 MONGO_URI=your_database_url
+PORT=5002
 JWT_SECRET=your_secret
 GEMINI_API_KEY=your_api_key
+ALLOWED_ORIGINS = http://localhost:5173
+
 ```
+VITE_API_URL=http://localhost:5002
 
 Run the project:
 
