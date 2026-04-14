@@ -5,6 +5,7 @@ const Resume = () => {
     <div>
       Resume
       <button>Click me</button>
+      <button>Click me</button>
     </div>
   );
 };
