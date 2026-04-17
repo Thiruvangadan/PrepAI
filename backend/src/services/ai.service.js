@@ -4,6 +4,16 @@ import { GoogleGenAI } from "@google/genai";
 import { z } from "zod";
 import { zodToJsonSchema } from "zod-to-json-schema";
 import puppeteer from "puppeteer";
+import fs from "fs";
+import path from "path";
+
+const getChromePath = () => {
+  const base = path.resolve(".cache/puppeteer/chrome");
+  const folders = fs.readdirSync(base);
+  const latest = folders[0];
+
+  return path.join(base, latest, "chrome-linux64", "chrome");
+};
 
 const ai = new GoogleGenAI({
   apiKey: process.env.GOOGLE_GENAI_API_KEY,
@@ -177,8 +187,7 @@ ${jobDescription}
 const generatePdfFromHtml = async (htmlContent) => {
   const browser = await puppeteer.launch({
     headless: "new",
-    executablePath:
-      "/opt/render/.cache/puppeteer/chrome/linux-146.0.7680.153/chrome-linux64/chrome",
+    executablePath: getChromePath(),
     args: ["--no-sandbox", "--disable-setuid-sandbox"],
   });
   const page = await browser.newPage();
