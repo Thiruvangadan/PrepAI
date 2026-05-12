@@ -6,8 +6,7 @@ A full-stack application that helps candidates prepare smarter for interviews us
 
 ## 🌐 Live Demo
 
-👉 Try the app here: https://prep-ai-pied-pi.vercel.app/
-
+👉 Try the app here: https://prep-ai-pied-pi.vercel.app
 ---
 
 ## 🔑 Demo Credentials
